@@ -3,6 +3,12 @@
 
 (local conjure-source {:timer nil :promise-id nil})
 
+(fn uid [m]
+  (var key nil)
+  (while (or (not key) (. m key))
+    (set key (* (math.random) 1000)))
+  key)
+
 (fn map [f ls]
   (icollect [_ v (ipairs ls)]
     (f v)))
@@ -61,7 +67,9 @@
                     (callback nil))))})
 
 (fn register []
-  (global COQsources (or COQsources {}))
-  (tset COQsources 1000 conjure-source-config))
+  (if vim.g.coq_conjure_autoregister
+      (do
+        (global COQsources (or COQsources {}))
+        (tset COQsources (uid COQsources) conjure-source-config))))
 
-{: register}
+{: register : conjure-source-config}

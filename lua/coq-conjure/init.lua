@@ -1,5 +1,12 @@
 local conjure_eval, conjure_promise = unpack({require("conjure.eval"), require("conjure.promise")})
 local conjure_source = {["promise-id"] = nil, timer = nil}
+local function uid(m)
+  local key = nil
+  while (not key or m[key]) do
+    key = (math.random() * 1000)
+  end
+  return key
+end
 local function map(f, ls)
   local tbl_0_ = {}
   for _, v in ipairs(ls) do
@@ -80,8 +87,10 @@ local function _0_(args, callback)
 end
 conjure_source_config = {fn = _0_, name = "Conjure"}
 local function register()
-  COQsources = (COQsources or {})
-  COQsources[1000] = conjure_source_config
-  return nil
+  if vim.g.coq_conjure_autoregister then
+    COQsources = (COQsources or {})
+    COQsources[uid(COQsources)] = conjure_source_config
+    return nil
+  end
 end
-return {register = register}
+return {["conjure-source-config"] = conjure_source_config, register = register}
