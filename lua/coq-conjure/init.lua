@@ -93,4 +93,4 @@ local function register()
     return nil
   end
 end
-return {["conjure-source-config"] = conjure_source_config, register = register}
+return {register = register, source = conjure_source_config}

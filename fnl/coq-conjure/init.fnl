@@ -72,4 +72,4 @@
         (global COQsources (or COQsources {}))
         (tset COQsources (uid COQsources) conjure-source-config))))
 
-{: register : conjure-source-config}
+{: register :source conjure-source-config}
